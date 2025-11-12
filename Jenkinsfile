@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven_3_9_1'   // Jenkins'dagi Maven tool nomi
+        maven 'maven_3_9_11'   // Jenkins'dagi Maven tool nomi
     }
 
     environment {
