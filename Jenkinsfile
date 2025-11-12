@@ -22,9 +22,11 @@ pipeline {
         stage('Build') {
             steps {
                 echo "🔨 Maven bilan build qilinmoqda..."
+                sh 'chmod +x ./mvnw'
                 sh './mvnw clean package -DskipTests'
             }
         }
+
 
         stage('Deploy') {
             steps {
