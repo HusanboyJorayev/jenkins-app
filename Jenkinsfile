@@ -5,7 +5,7 @@ pipeline {
         JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${env.PATH}"
         DEPLOY_SERVER = 'root@45.138.158.89'
-        DEPLOY_PATH = '/root/'
+        DEPLOY_PATH = '/root/target/'
         JAR_NAME = 'jenkins_app.jar'
         LOG_FILE = "/var/log/${JAR_NAME}.log"
         BACKUP_PATH = '/root/backup/'
