@@ -34,7 +34,7 @@ pipeline {
                     sh "scp -o StrictHostKeyChecking=no target/${JAR_NAME} ${DEPLOY_SERVER}:${DEPLOY_PATH}"
 
                     echo "⏹️ Eski jarni backup va to‘xtatish..."
-                    sh """
+                    sh '''
                     ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} '
                         mkdir -p ${BACKUP_PATH};
                         if [ -f ${DEPLOY_PATH}${JAR_NAME} ]; then
@@ -42,17 +42,18 @@ pipeline {
                         fi
                         pkill -f "${JAR_NAME}" || true
                     '
-                    """
+                    '''
 
                     echo "▶️ Yangi jarni ishga tushirish..."
-                    sh """
+                    sh '''
                     ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} '
                         nohup java -jar ${DEPLOY_PATH}${JAR_NAME} > ${LOG_FILE} 2>&1 &
                     '
-                    """
+                    '''
                 }
             }
         }
+
 
 
 
