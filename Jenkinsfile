@@ -29,31 +29,31 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sshagent(['agro_server_key']) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'agro_server_key', keyFileVariable: 'SSH_KEY')]) {
                     echo "📤 Jar fayl serverga yuborilmoqda..."
-                    sh "scp -o StrictHostKeyChecking=no target/${JAR_NAME} ${DEPLOY_SERVER}:${DEPLOY_PATH}"
+                    sh "scp -i $SSH_KEY -o StrictHostKeyChecking=no target/${JAR_NAME} ${DEPLOY_SERVER}:${DEPLOY_PATH}"
 
                     echo "⏹️ Eski jarni backup va to‘xtatish..."
                     sh '''
-                    ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} '
-                        mkdir -p ${BACKUP_PATH};
-                        if [ -f ${DEPLOY_PATH}${JAR_NAME} ]; then
-                            mv ${DEPLOY_PATH}${JAR_NAME} ${BACKUP_PATH}${JAR_NAME}_$(date +%Y%m%d%H%M%S);
-                        fi
-                        pkill -f "${JAR_NAME}" || true
-                    '
+                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no ${DEPLOY_SERVER} '
+                            mkdir -p ${BACKUP_PATH};
+                            if [ -f ${DEPLOY_PATH}${JAR_NAME} ]; then
+                                mv ${DEPLOY_PATH}${JAR_NAME} ${BACKUP_PATH}${JAR_NAME}_$(date +%Y%m%d%H%M%S);
+                            fi
+                            pkill -f "${JAR_NAME}" || true
+                        '
                     '''
 
                     echo "▶️ Yangi jarni ishga tushirish..."
                     sh '''
-                    ssh -o StrictHostKeyChecking=no ${DEPLOY_SERVER} '
-                        nohup java -jar ${DEPLOY_PATH}${JAR_NAME} > ${LOG_FILE} 2>&1 &
-                    '
+                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no ${DEPLOY_SERVER} '
+                            nohup java -jar ${DEPLOY_PATH}${JAR_NAME} > ${LOG_FILE} 2>&1 &
+                            disown
+                        '
                     '''
                 }
             }
         }
-
     }
 
     post {
