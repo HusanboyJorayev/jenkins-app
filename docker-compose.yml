@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  jenkins-service:
+    image: hjorayev/jenkins-service:latest
+    container_name: jenkins-service
+    ports:
+      - "8765:8765"
+    restart: always

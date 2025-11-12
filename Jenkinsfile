@@ -1,57 +1,46 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'maven_3_9_1'   // Jenkins'dagi Maven tool nomi
+    }
+
     environment {
-        JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
-        PATH = "${JAVA_HOME}/bin:${env.PATH}"
-        DEPLOY_SERVER = 'root@45.138.158.89'
-        DEPLOY_PATH = '/root/target/'
-        JAR_NAME = 'jenkins_app.jar'
-        LOG_FILE = "/var/log/${JAR_NAME}.log"
-        BACKUP_PATH = '/root/backup/'
+        DOCKER_IMAGE = 'hjorayev/jenkins-service'  // DockerHub image nomi
+        APP_NAME = 'jenkins-service'                // Docker konteyner nomi
+        APP_PORT = '8765'                           // Ilova porti
+        DOCKER_HOST = 'unix:///var/run/docker.sock' // Lokal docker daemon
+        BUILD_NUMBER = "${env.BUILD_NUMBER}"        // Jenkins build raqami
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                echo "📥 Kod GitHub-dan olinmoqda..."
-                git branch: 'master', url: 'https://github.com/HusanboyJorayev/jenkins-app.git'
-            }
-        }
-
-        stage('Build') {
+        stage('Checkout & Build') {
             steps {
                 echo "🔨 Maven bilan build qilinmoqda..."
-                sh 'chmod +x ./mvnw'
-                sh './mvnw clean package -DskipTests'
+                checkout scm
+                sh 'mvn clean package -DskipTests'
             }
         }
 
-        stage('Deploy') {
+        stage('Docker Build & Push') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'agro_server_key', keyFileVariable: 'SSH_KEY')]) {
-                    echo "📤 Jar fayl serverga yuborilmoqda..."
-                    sh "scp -i $SSH_KEY -o StrictHostKeyChecking=no target/${JAR_NAME} ${DEPLOY_SERVER}:${DEPLOY_PATH}"
+                echo "🐳 Docker image yaratilmoqda..."
+                sh "docker -H $DOCKER_HOST build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} ."
 
-                    echo "⏹️ Eski jarni backup va to‘xtatish..."
-                    sh '''
-                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no ${DEPLOY_SERVER} '
-                            mkdir -p ${BACKUP_PATH};
-                            if [ -f ${DEPLOY_PATH}${JAR_NAME} ]; then
-                                mv ${DEPLOY_PATH}${JAR_NAME} ${BACKUP_PATH}${JAR_NAME}_$(date +%Y%m%d%H%M%S);
-                            fi
-                            pkill -f "${JAR_NAME}" || true
-                        '
-                    '''
+                echo "📤 DockerHub-ga push qilinmoqda..."
+                sh "docker login -u hjorayev -p husanboybackanddeveloper"
+                sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"
+            }
+        }
 
-                    echo "▶️ Yangi jarni ishga tushirish..."
-                    sh '''
-                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no ${DEPLOY_SERVER} '
-                            nohup java -jar ${DEPLOY_PATH}${JAR_NAME} > ${LOG_FILE} 2>&1 &
-                            disown
-                        '
-                    '''
-                }
+        stage('Run Docker Container') {
+            steps {
+                echo "🚀 Konteyner ishga tushirilmoqda..."
+                sh """
+                    docker stop ${APP_NAME} || true
+                    docker rm ${APP_NAME} || true
+                    docker run -d --name ${APP_NAME} -p ${APP_PORT}:${APP_PORT} ${DOCKER_IMAGE}:${BUILD_NUMBER}
+                """
             }
         }
     }
