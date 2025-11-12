@@ -35,7 +35,7 @@ pipeline {
 
                     echo "⏹️ Eski jarni backup va to‘xtatish..."
                     sh "ssh ${DEPLOY_SERVER} 'mkdir -p ${BACKUP_PATH}'"
-                    sh "ssh ${DEPLOY_SERVER} 'if [ -f ${DEPLOY_PATH}${JAR_NAME} ]; then mv ${DEPLOY_PATH}${JAR_NAME} ${BACKUP_PATH}${JAR_NAME}_$(date +%Y%m%d%H%M%S); fi'"
+                    sh "ssh ${DEPLOY_SERVER} 'if [ -f ${DEPLOY_PATH}${JAR_NAME} ]; then mv ${DEPLOY_PATH}${JAR_NAME} ${BACKUP_PATH}${JAR_NAME}_\$(date +%Y%m%d%H%M%S); fi'"
                     sh "ssh ${DEPLOY_SERVER} 'pkill -f ${JAR_NAME} || true'"
 
                     echo "▶️ Yangi jarni ishga tushirish..."
@@ -43,6 +43,7 @@ pipeline {
                 }
             }
         }
+
     }
 
     post {
