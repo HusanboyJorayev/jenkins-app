@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'hjorayev/jenkins-service'  // DockerHub image nomi
+        DOCKER_IMAGE = 'husanboyjorayevv/jenkins-service'  // DockerHub image nomi
         APP_NAME = 'jenkins-service'                // Docker konteyner nomi
         APP_PORT = '8765'                           // Ilova porti
         DOCKER_HOST = 'unix:///var/run/docker.sock' // Lokal docker daemon
@@ -28,7 +28,7 @@ pipeline {
                 sh "docker -H $DOCKER_HOST build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} ."
 
                 echo "📤 DockerHub-ga push qilinmoqda..."
-                sh "docker login -u hjorayev -p husanboybackanddeveloper"
+                sh "docker login -u husanboyjorayevv -p husanboy2828"
                 sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"
             }
         }
