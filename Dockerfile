@@ -1,5 +1,5 @@
 # 1️⃣ Bosqich: Build stage (Maven bilan .jar faylni yig‘ish)
-FROM maven:3.9.1-eclipse-temurin-21-alpine AS build
+FROM maven:3.9.11-eclipse-temurin-17 AS build
 WORKDIR /app
 
 # faqat dependency kechiktirilmasin deb, pom.xml avvaldan copy qilamiz
