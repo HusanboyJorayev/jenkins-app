@@ -10,7 +10,7 @@ pipeline {
         APP_NAME = 'jenkins-service'
         APP_PORT = '8765'
         DOCKER_HOST = 'unix:///var/run/docker.sock'
-        MONITORING_COMPOSE = '/home/jenkins/monitoring/docker-compose.yml' // Monitoring docker-compose yo‘li
+        MONITORING_COMPOSE = '/root/monitoring/docker-compose.yml' // Monitoring docker-compose yo‘li
     }
 
     stages {
