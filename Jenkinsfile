@@ -10,7 +10,7 @@ pipeline {
         APP_NAME = 'jenkins-service'
         APP_PORT = '8765'
         DOCKER_HOST = 'unix:///var/run/docker.sock'
-        //MONITORING_COMPOSE = '/root/monitoring/docker-compose.yml' // Monitoring docker-compose yo‘li
+        MONITORING_COMPOSE = '/root/monitoring/docker-compose.yml' // Monitoring docker-compose yo‘li
     }
 
     stages {
@@ -46,14 +46,13 @@ pipeline {
             }
         }
 
-         /* stage('Start Monitoring') {
+         stage('Start Monitoring') {
              steps {
                  echo "📊 Monitoring servislarini ishga tushurish..."
-                 sh """
-                    /usr/local/bin/docker-compose -f ${MONITORING_COMPOSE} up -d
-                 """
+                 // Docker Compose V2 bilan ishga tushirish
+                 sh "docker compose -f ${MONITORING_COMPOSE} up -d"
              }
-         } */
+         }
     }
 
     post {
