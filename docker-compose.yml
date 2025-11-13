@@ -17,7 +17,7 @@ services:
     ports:
       - "7070:7070"
     volumes:
-      - /root/monitoring/docker-compose.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     restart: unless-stopped
 
   grafana:
