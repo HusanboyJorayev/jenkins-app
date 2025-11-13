@@ -17,4 +17,9 @@ public class TestController {
     public ResponseEntity<?> test() {
         return ResponseEntity.ok("TEST IS WORKING ON SERVER");
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> me() {
+        return ResponseEntity.ok("JO'RAYEV HUSANBOY");
+    }
 }
