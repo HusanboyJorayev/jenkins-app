@@ -19,7 +19,7 @@ services:
     ports:
       - "7070:7070"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - /root/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
     restart: unless-stopped
 
   grafana:
