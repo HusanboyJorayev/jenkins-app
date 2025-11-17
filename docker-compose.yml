@@ -3,7 +3,7 @@ services:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
     ports:
-      - "8082:8081"   # cAdvisor UI
+      - "8082:8080"   # cAdvisor UI
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -29,4 +29,5 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SERVER_HTTP_ADDR=0.0.0.0
 
