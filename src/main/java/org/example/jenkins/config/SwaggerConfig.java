@@ -17,8 +17,8 @@ import org.springframework.context.annotation.Configuration;
                 description = "Demo Jenkins API Documentation"
         ),
         servers = {
-                @Server(url = "http://localhost:8765/jenkins", description = "Local Server"),
-                @Server(url = "https://agrosphere.uz/jenkins", description = "Prod Server")
+                @Server(url = "http://localhost:8765/demo", description = "Local Server"),
+                @Server(url = "https://agrosphere.uz/demo", description = "Prod Server")
         },
         security = @SecurityRequirement(name = "bearerAuth") // Apply globally
 )

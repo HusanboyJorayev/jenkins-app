@@ -21,7 +21,7 @@ server:
   port: 8765
   shutdown: graceful
   servlet:
-    context-path: "/jenkins"
+    context-path: "/demo"
 
 springdoc:
   api-docs:
