@@ -22,4 +22,9 @@ public class TestController {
     public ResponseEntity<?> me() {
         return ResponseEntity.ok("JO'RAYEV HUSANBOY");
     }
+
+    @GetMapping("/jenkins")
+    public ResponseEntity<?> jenkins() {
+        return ResponseEntity.ok("JENKINS IS WORKING ON SERVER");
+    }
 }
