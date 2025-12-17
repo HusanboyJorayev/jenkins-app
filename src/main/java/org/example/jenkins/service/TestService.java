@@ -5,7 +5,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-@Service
+/*@Service
 @RequiredArgsConstructor
 public class TestService {
 
@@ -14,4 +14,4 @@ public class TestService {
         return ResponseEntity.ok().body("Hello " + id);
     }
 
-}
+}*/
