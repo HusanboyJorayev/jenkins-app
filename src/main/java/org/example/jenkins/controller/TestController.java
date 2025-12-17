@@ -1,4 +1,4 @@
-package org.example.jenkins.config;
+package org.example.jenkins.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

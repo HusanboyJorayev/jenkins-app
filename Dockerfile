@@ -19,7 +19,7 @@ WORKDIR /app
 # build bosqichidan .jar faylni ko‘chirib olamiz
 COPY --from=build /app/target/*.jar app.jar
 
-# 8080 portni ochamiz
+# 8765 portni ochamiz
 EXPOSE 8765
 
 # JVM uchun ba’zi optimizatsiyalar (ixtiyoriy, lekin tavsiya etiladi)
